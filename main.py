@@ -1,11 +1,14 @@
+import asyncio
 import os
 import redis
 import requests
 from telegram import Bot
 from dotenv import load_dotenv
 
-# Загружаем переменные окружения из .env файла
 load_dotenv()
+
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
 
 # Конфигурация
 REDIS_URI = os.getenv("REDIS_URI", "redis://localhost:6379/0")
@@ -52,7 +55,7 @@ def check_and_notify():
                 f"Текущая цена: ${current_price}\n"
                 f"Пересечено значение: ${current_price_rounded}"
             )
-            bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
+            loop.run_until_complete(bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message))
 
     # Сохраняем текущую цену в Redis
     redis_client.set(REDIS_KEY, current_price)
