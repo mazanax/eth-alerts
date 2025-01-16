@@ -48,11 +48,13 @@ def check_and_notify():
 
         # Проверяем, пересечено ли "круглое" значение
         if current_price_rounded != previous_price_rounded:
+            crossed_amount = previous_price_rounded if previous_price > current_price else current_price_rounded
+
             direction = "вверх" if current_price > previous_price else "вниз"
             direction_emoji = "🔺" if current_price > previous_price else "🔻"
             message = (
                 f"{direction_emoji} Цена ETH изменилась {direction}: <b>${current_price}</b> (prev: <b>${previous_price}</b>)\n"
-                f"Пересечено значение: <b>${previous_price_rounded}</b>"
+                f"Пересечено значение: <b>${crossed_amount}</b>"
             )
             loop.run_until_complete(bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message))
 
