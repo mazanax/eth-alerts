@@ -56,7 +56,7 @@ def check_and_notify():
                 f"{direction_emoji} Цена ETH изменилась {direction}: <b>${current_price}</b> (prev: <b>${previous_price}</b>)\n"
                 f"Пересечено значение: <b>${crossed_amount}</b>"
             )
-            loop.run_until_complete(bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message))
+            loop.run_until_complete(bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message, parse_mode="html"))
 
     # Сохраняем текущую цену в Redis
     redis_client.set(REDIS_KEY, current_price)
